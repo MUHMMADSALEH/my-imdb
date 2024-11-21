@@ -1,3 +1,4 @@
+"use client";
 import NavbarItem from './NavbarItem';
 
 export default function Navbar() {

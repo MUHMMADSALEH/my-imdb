@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 export default function SearchBox() {
   const [search, setSearch] = useState('');
   const router = useRouter();
-  const handleSubmit = (e:any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push(`/search/${search}`);
   };

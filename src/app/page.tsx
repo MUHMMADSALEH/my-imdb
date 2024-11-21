@@ -1,27 +1,33 @@
 import Results from "@/components/Results";
-import Image from "next/image";
 
 const API_KEY = process.env.API_KEY;
 
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ genre?: string }>;
+}) {
+  // Await the searchParams object
+  const resolvedSearchParams = await searchParams;
+  const genre = resolvedSearchParams?.genre || "fetchTrending";
 
-
-export default async function Home({ searchParams}:{searchParams:any}) {
-  const genre = searchParams.genre || 'fetchTrending';
+  // Fetch data based on the genre
   const res = await fetch(
     `https://api.themoviedb.org/3${
-      genre === 'fetchTopRated' ? `/movie/top_rated` : `/trending/all/week`
+      genre === "fetchTopRated" ? `/movie/top_rated` : `/trending/all/week`
     }?api_key=${API_KEY}&language=en-US&page=1`,
     { next: { revalidate: 10000 } }
   );
-  const data = await res.json();
+
   if (!res.ok) {
-    throw new Error('Failed to fetch data');
+    throw new Error("Failed to fetch data");
   }
-  const results = data.results;
+
+  const data = await res.json();
 
   return (
     <div>
-      <Results results={results} />
+      <Results results={data.results} />
     </div>
   );
 }
